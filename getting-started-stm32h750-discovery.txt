@@ -1,0 +1,270 @@
+@TITLE: STM32H750 Discovery
+@SUMMARY: This article explains the necessary steps to get your first Embedded Wizard UI application up and running on an STM32H750 Discovery board (STM32H750B-DK).
+@TAGS: stm32h750, stm32h750xh, stm32h750 discovery, stm32h750 disco, stm32h750b-dk, stm32h750b-disco, h750, value line, build environment, hello world, getting started, color formats, screen orientation, device integration, template, compiler, linker, toolchain, gcc, stm32cubeprogrammer, stm32cube, stm32-cube, tools, makefile, qspi flash, freertos, console, terminal, stcube, make, install, main.c, ewmain.c, usart, uart, helloworld, command line, sdk, bsp, no rule, framebuffer address, dma2d, accelerator, iar, embedded workbench, keil, mdk arm, mdk-arm, arm-mdk, ew_bsp, stm32cubeide, cube-ide, custom hardware, customer specific hardware
+@SUBPAGES:
+@RELPAGES:
+
+{page-title}
+
+{figure:stm32h750-discovery-1}
+{figure-legend}STM32H750 Discovery board (STM32H750B-DK).{.}
+
+The following article explains all necessary steps to create an Embedded Wizard UI application suitable for the [proper]STM32H750 Discovery board (STM32H750B-DK)[.] from STMicroelectronics.
+Please follow these instructions carefully and step by step in order to ensure that you will get everything up and running on your target. In case you are not familiar with Embedded Wizard, please read first the chapter [>>:basic-concepts]basic concepts[.] and the [>>:quick-tour]Quick Tour[.] tutorial to understand the principles of Embedded Wizard and the GUI development workflow.
+
+#1 Prerequisites
+
+First, make sure you have all of the following items:
+
+##1_1 Hardware components
+
+{feature}[>>:http://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-eval-tools/stm32-mcu-eval-tools/stm32-mcu-discovery-kits/stm32h750b-dk.html]STM32H750 Discovery board[.] from STMicroelectronics (STM32H750B-DK){.}
+{feature}USB cable to connect the board with your PC{.}
+
+##1_2 Software components
+
+{feature}Embedded Wizard Studio Free or Embedded Wizard Studio Pro{.}
+{note}If you want to use the Free edition of Embedded Wizard Studio please [>>:https://www.embedded-wizard.de/download.html]register on our website[.] and download the software.
+As a customer, please visit the Embedded Wizard Download Center (login/password required) and download Embedded Wizard Studio Pro.{.}
+{feature}Embedded Wizard Build Environment for STM32H750 Discovery{.}
+{note}To evaluate Embedded Wizard on the mentioned target, you can download the suitable Build Environment from the following link:
+[download:https://get.embedded-wizard.de/data/14.00/STM32H750-Discovery-BuildEnvironment-V14.00.00.00.zip]
+As a customer, please visit the Embedded Wizard Download Center (login/password required) and download the latest version of the Build Environment and your licensed Platform Package libraries or source codes.{.}
+{feature}[>>:https://www.st.com/en/development-tools/stm32cubeprog.html]STM32CubeProgrammer[.] from STMicroelectronics{.}
+{feature}Optional: [>>:https://www.st.com/en/development-tools/stm32cubeide.html]STM32CubeIDE[.] from STMicroelectronics{.}
+{feature}Optional: [>>:https://www.iar.com/products/architectures/arm/iar-embedded-workbench-for-arm/]IAR Embedded Workbench[.]{.}
+{feature}Optional: [>>:https://www2.keil.com/mdk5]Keil MDK-ARM[.]{.}
+
+#2 Installing Tools and Software
+
+{step}Step 1: Install the latest version of Embedded Wizard Studio.{.}
+{step}Step 2: Install the STM32CubeProgrammer utility. Test the connection from PC to Discovery board and the proper installation of the USB drivers: Connect the Discovery board with your PC via USB (make sure to use the ST-LINK USB connector) and start the previously installed STM32CubeProgrammer. Select the green button [menu]Connect[.] and verify that the connection could be established successfully. Finally, close the STM32CubeProgrammer utility.{.}
+{step}Step 3: Unpack the provided Embedded Wizard Build Environment for STM32H750 Discovery to your local file system (e.g. [file]C:\STM32\STM32H750-Discovery[.]). Please make sure to use a short working folder path because STM32CubeIDE (to be more precise: Eclipse) has restrictions regarding the file path length.{.}
+{step}Step 4: Take a text editor and open the file [file]FlashDownload.cfg[.] that you will find in the subdirectory [file]\Application\FlashDownload[.] of the Build Environment. At the beginning of the file, the following environment variable has to be set to the installation path of the STM32CubeProgrammer utility:
+* [file]Stm32CubeProgrammerPath[.] - Absolute path of your installed STM32CubeProgrammer utility (Step 2).{.}
+{step}Step 5: Make the same changes within the file [file]StartGccBuildEnvironment_Bootloader.bat[.] that you will find in the root directory of the Build Environment.{.}
+
+#20 Embedded Wizard GUI Demos
+
+If you just want to run our GUI demos on your STM32H750 Discovery board without building the different examples, you can simply flash the binary file of the Embedded Wizard Master Demo.
+The Embedded Wizard Master Demo combines a variety of examples within one huge demo application. It can be used for presentations and showcases. Each demo application can be activated from a common main menu. To return back from a demo application to the main menu, a small home button appears on top of every demo. Additionally, the Master Demo contains an auto-demo mode that presents one demo application after the other. The auto-demo starts automatically and stops as soon as the user touches the screen.
+
+In order to flash the binary file to your target, please follow these steps:
+
+{step}Connect your development board with your PC via USB (make sure to use the ST-LINK USB connector).{.}
+{step}Execute the batch file [file]FlashMasterDemo.bat[.]: A console window will appear and the flash tool will download the binary file of the Master Demo.{.}
+
+{figure:stm32h750-discovery-8}
+{figure-legend}'Master Demo' running on STM32H750 Discovery board.{.}
+
+#3 Exploring the Build Environment
+
+The provided Embedded Wizard Build Environment for STM32H750 Discovery contains everything you need to create, compile, link and flash an Embedded Wizard UI application for the STM32H750 target. After unpacking, you will find the following subdirectories and files:
+
+* [file]StartGccBuildEnvironment.bat[.] - This script file is provided to start a windows command line to build your GUI applications for the target.
+* [file]StartGccBuildEnvironment_Bootloader.bat[.] - This script file is provided to start a windows command line to build the necessary bootloader for the target.
+* [file]\Application[.] - This folder contains ready-to-use projects to compile and link an Embedded Wizard generated UI application. They are used for all provided examples and they can be used to build your own UI applications.
+ * [file]\FlashDownload[.] - This folder contains a script to load the created binaries into the flash of your target by using the STM32CubeProgrammer tool. Don't forget to set the path of your installed STM32CubeProgrammer utility within the file [file]FlashDownload.cfg[.].
+ * [file]\GeneratedCode[.] - This folder is used to receive the generated code from an Embedded Wizard UI project. All template projects are building the UI application out of this folder. You can create your own UI project and generate the code into the subdirectory [file]\GeneratedCode[.] without the need to adapt the project.
+ * [file]\Project[.] - This folder contains the prepared projects for GCC (make), IAR Embedded Workbench, Keil MDK-ARM and STM32CubeIDE.
+ * [file]\Source[.] - This folder contains the files [file]main.c[.] and [file]ewmain.c[.]. There you will find the initialization of the system and the [>>:main-loop]main loop[.] to drive an Embedded Wizard GUI application. The file [file]ewconfig.h[.] contains general [>>:target-configuration]configuration settings[.] for the target system, like memory ranges and display parameter and configuration settings for the Embedded Wizard Graphics Engine and Runtime Environment. Additionally, this folder contains a configuration file for FreeRTOS and the device driver C/H files used for the DeviceIntegration example.
+* [file]\Bootloader[.] - This folder contains ready-to-use projects to compile and link the necessary bootloader in order to support code execution from external memory (QSPI flash).
+ * [file]\Project[.] - This folder contains the prepared projects for GCC (make), IAR Embedded Workbench and  Keil MDK-ARM.
+ * [file]\Source[.] - This folder contains the source code of the bootloader to support code execution from external memory (QSPI flash). There you will find the necessary initialization of the system to start the GUI application located in the QSPI flash.
+* [file]\Examples\<ScreenSize>[.] - This folder contains a set of demo applications prepared for a dedicated screen size (480x272 pixel). Each example is stored in a separate folder containing the entire Embedded Wizard UI project. Every project contains the necessary profile settings for the STM32H750 target. The following samples are provided:
+ * [file]\HelloWorld[.] - A very simple project that is useful as starting point and to verify that the entire toolchain, your installation and your board is properly working.
+ * [file]\ColorFormats[.] - This project demonstrates that every UI application can be generated for different color formats: RGBA8888, RGB888, RGBA4444, RGB565, Index8 and LumA44.
+ * [file]\ScreenOrientation[.] - This demo shows, that the orientation of the UI application is independent from the physical orientation of the display.
+ * [file]\DeviceIntegration[.] - This example shows the [>>:device-class-and-device-driver]integration of devices[.] into a UI application and addresses typical questions: How to start a certain action on the target? How to get data from a device?
+ * [file]\GraphicsAccelerator[.] - This application demonstrates the graphics performance of the DMA2D hardware graphics accelerator. Sets of basic drawing operations are executed permanently and continuously, while the user can switch on/off the hardware accelerator.
+ * [file]\BezierClock[.] - The sample application BezierClock implements a fancy digital clock and timer application with animated digits. The application uses vector graphics to render dynamically the different digits for clock and timer. The change from one digit to another is handled by moving the vector points to get a smooth transition animation.
+ * [file]\BrickGame[.] - The sample application BrickGame implements a classic "paddle and ball" game. In the game, a couple of brick rows are arranged in the upper part of the screen. A ball travels across the screen, bouncing off the top and side walls of the screen. When a brick is hit, the ball bounces away and the brick is destroyed. The player has a movable paddle to bounce the ball upward, keeping it in play.
+ * [file]\ClimateCabinet[.] - The ClimateCabinet demo shows the implementation of a control panel for a climatic exposure test cabinet. The user can define a heating time, a nominal temperature and humidity, a dwell time and the final cooling time.
+ * [file]\Dashboard[.] - The sample application Dashboard shows the implementation of a car dashboard. The application demonstrates the usage of vector graphics created from svg path data and how transitions between two dashboard variants and further UI components can be achieved.
+ * [file]\PaperCutter[.] - This demo shows the implementation of a paper cutting machine, where the user can define the pagination and format of the paper as well as the cutting speed and the amount of papers. The application contains many rect effects and fade-in/fade-out effects to change dynamically the layout of the screen.
+ * [file]\PulseOximeter[.] - The sample application PulseOximeter shows the implementation of a medical device for monitoring a person's pulse frequency and peripheral oxygen saturation. The application demonstrates the usage of vector graphics within graphs and circular gauges.
+ * [file]\SmartThermostat[.] - The SmartThermostat demo application shows the implementation of a fancy, rotatable temperature controller to adjust and display the nominal and actual temperature.
+ * [file]\WashingMachine[.] - This demo shows the implementation of a washing machine with a couple of fancy scrollable list widgets to choose the washing program and parameters. The speciality of this sample application is the magnification effect of the centered list items and the soft fade-in/fade-out effects.
+ * [file]\WaveformGenerator[.] - This WaveformGenerator demo application combines waveforms with different amplitudes and frequencies. The implementation shows the usage of vector graphics to draw a curve based on a list of coordinates.
+* [file]\MasterDemo[.] - This folder contains the binary file of the Embedded Wizard Master Demo application and a script file to flash the demo on your target. The Master Demo combines a variety of examples within one huge demo application. It can be used for presentations and showcases.
+* [file]\PlatformPackage[.] - This folder contains the necessary source codes and/or libraries of the STM32 Platform Package: Several Graphics Engines for the different color formats (RGBA8888, RGB888, RGBA4444, RGB565, Index8 and LumA44) and the Runtime Environment (in the subdirectory [file]\RTE[.]).
+* [file]\TargetSpecific[.] - This folder contains all configuration files and platform specific source codes. The different [file]ew_bsp_xxx[.] files implement the bridge between the Embedded Wizard UI application and the underlying board support package (STM32 hardware drivers) in order to access the display, the graphics accelerator, the serial interface and the clock.
+* [file]\ThirdParty[.] - This folder contains third-party source codes and tools:
+ * [file]\gcc-arm-none-eabi[.] - This folder contains a subset of the [>>:https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads]ARM GNU toolchain[.] to compile the examples.
+ * [file]\Make[.] - This folder contains a [file]make[.] tool to build the entire GUI application via command line.
+ * [file]\STM32Cube_FW_H7[.] - This folder contains the necessary subset of the [>>:http://www.st.com/content/st_com/en/products/embedded-software/mcus-embedded-software/stm32-embedded-software/stm32cube-mcu-packages/stm32cubeh7.html]STM32CubeH7 embedded software for STM32H7 series[.] used for the Embedded Wizard UI applications (HAL, BSP, drivers, FreeRTOS).
+
+#16 Code Execution from External Memory (Bootloader)
+Due to the fact that the STM32H750 MCU provides only a small internal flash memory, the entire GUI application has to be launched from the external QSPI flash memory. For that purpose, a small bootloader is necessary in order to intialize the system and to start the code execution from QSPI flash. For more details, please have a look into the application note [>>:https://www.st.com/resource/en/application_note/DM00514974.pdf]AN5188[.].
+
+The following steps are necessary to build and flash the bootloader using the GCC ARM embedded toolchain:
+
+{step}Navigate to the top level of the Build Environment.{.}
+{step}Open [file]StartGccBuildEnvironment_Bootloader.bat[.] - as a result, a windows command line window should open. In case there are error messages, please edit the file and double-check the path settings.{.}
+{step}Now start compiling, linking and flashing:{.}
+
+{code-c}
+make
+make install
+{.}
+
+If everything works as expected, the bootloader should be built and flashed to the STM32H750 target. Now the code is executed from external memory (QSPI flash). You can now build and download any GUI application into the QSPI flash memory.
+Flashing the bootloader is only necessary one time.
+
+
+#4 Creating the UI Examples
+
+For the first bring up of your system, we recommend to use the example 'HelloWorld':
+
+{figure:stm32h750-discovery-3}
+{figure-legend}Example 'HelloWorld' within Embedded Wizard Studio.{.}
+
+The following steps are necessary to generate the source code of this sample application:
+
+{step}Navigate to the directory [file]\Examples\<ScreenSize>\HelloWorld[.].{.}
+{step}Open the project file [file]HelloWorld.ewp[.] with your previously installed Embedded Wizard Studio. The entire project is well documented inline. You can run the UI application within the Prototyper by pressing [hotkey]Ctrl[.]+[hotkey]F5[.].{.}
+{step}To start the code generator, select the menu items [menu]Build/Build this profile[.] - or simply press [hotkey]F8[.].
+Embedded Wizard Studio generates now the sources files of the example project into the directory [file]\Application\GeneratedCode[.].{.}
+
+#5 Compiling, Linking and Flashing
+
+The following steps are necessary to build and flash the Embedded Wizard UI sample application using the GCC ARM embedded toolchain:
+
+{step}Navigate to the top level of the Build Environment.{.}
+{step}Open [file]StartGccBuildEnvironment.bat[.] - as a result, a windows command line window should open. In case there are error messages, please edit the file and double-check the path settings.{.}
+{step}Now start compiling, linking and flashing:{.}
+
+{code-c}
+make
+make install
+{.}
+
+If everything works as expected, the application should be built and flashed to the STM32H750 target.
+
+{figure:stm32h750-discovery-4}
+{figure-legend}Example 'HelloWorld' running on STM32H750 Discovery board.{.}
+
+All other examples can be created in the same way: Just open the desired example with Embedded Wizard Studio, generate code and rebuild the whole application using simply:
+
+{code-c}
+make install
+{.}
+
+#6 Creating your own UI Applications
+
+In order to create your own UI project suitable for the STM32H750 target, you can [>>:create-new-project-dialog]create a new project[.] and select the STM32H750 Discovery project template:
+
+{figure:stm32h750-discovery-5}
+
+As a result you get a new Embedded Wizard project, that contains the necessary [>>:profile-member]Profile[.] attributes suitable for the STM32H750 Discovery board:
+
+{figure:stm32h750-discovery-6}
+
+The following profile settings are important for your target:
+
+{step}The attribute [>>:platformpackage-attr]PlatformPackage[.] should refer to the STM32 Platform Package.{.}
+{step}The attribute [>>:screensize-attr]ScreenSize[.] should correspond to the display size of the STM32H750 Discovery board.{.}
+{step}The attributes [>>:formatofbitmapresources-attr]ModeOfBitmapResources[.] and [>>:formatofstringconstants-attr]ModeOfStringConstants[.] can be set to [identifier]DirectAccess[.] in case that the resources should be taken directly from flash memory. By default these attributes are set to [identifier]Compressed[.].{.}
+{step}The attribute [>>:outputdirectory-attr]OutputDirectory[.] should refer to the [file]\Application\GeneratedCode[.] directory within your Build Environment. By using this template, it will be very easy to build the UI project for your target.{.}
+{step}The attribute [>>:cleanoutputdirectories-attr]CleanOutputDirectories[.] should be set to [identifier]true[.] to ensure that unused source code within the output directory [file]\Application\GeneratedCode[.] will be deleted.{.}
+{step}The attribute [>>:postprocess-attr]PostProcess[.] should refer to [file]\Application\Project\EWARM\EWARM_ew_post_process.cmd[.] if you are working with IAR Embedded Workbench or to [file]\Application\Project\MDK-ARM\MDK-ARM_ew_post_process.cmd[.] if you are working with Keil MDK-ARM or to [file]\Application\Project\STM32CubeIDE\STM32H750-Discovery\STM32CubeIDE_ew_post_process.cmd[.] if you are working with STM32CubeIDE. In case of the GCC ARM embedded toolchain leave it blank{.}
+
+Now you can use the template project in the same manner as it was used for the provided examples to compile, link and flash the binary.
+After generating code, please follow these steps, in order to build your own UI application:
+
+{step}Start the batch file 'StartGccBuildEnvironment.bat'. Again, a windows command line window should open.{.}
+{step}Start compiling, linking and flashing:{.}
+
+{code-c}
+make install
+{.}
+
+Most of the project settings are taken directly out of the generated code, like the color format or the screen orientation. Only a few additional settings can be configured directly within the [file]Makefile[.], like the usage of an external flash memory or the usage of the FreeRTOS operating system. All other settings can be made directly within the file [file]ewconfig.h[.], which contains general [>>:target-configuration]configuration settings[.] for the target system.
+
+#7 Console output
+
+In order to receive error messages or to display simple debug or trace messages from your Embedded Wizard UI application, a serial terminal like 'Putty' or 'TeraTerm' should be used.
+
+{step}As soon as you connect your STM32H750 target with the PC via USB, a [identifier]STMicroelectronics STLink Virtual COM Port (COMx)[.] appears within your system device list. Open the device manager to get the number of the installed COM port.{.}
+{step}Now you can open your terminal application and connect it via COMx with the following settings: 115200-8-N-1{.}
+
+{figure:stm32h750-discovery-7}
+
+This terminal connection can be used for all [>>:trace-statement]trace statements[.] from your Embedded Wizard UI applications or for all debug messages from your C code.
+
+#8 Using IAR Embedded Workbench
+
+If you want to use the IAR Embedded Workbench instead of the GCC ARM embedded toolchain, please follow these instructions:
+{tipp}
+By default, the external QSPI flash of the STM32 board is used to store string constants, bitmap resources and font resources.
+If the flash downloader integrated in IAR Embedded Workbench doesn't support the external flash, the examples can alternatively be flashed using the STM32CubeProgrammer. For more convenience the STM32CubeProgrammer can be integrated to IAR Embedded Workbench as an external tool.
+Command and argument are as follows:
+[file]$PROJ_DIR$\..\..\FlashDownload\FlashDownload.cmd[.]
+[file]$TARGET_PATH$ separateConsole[.]
+{.}
+The subdirectory [file]\Application\Project\EWARM[.] contains a template project that is commonly used for all provided Embedded Wizard examples. All Embedded Wizard examples will store the generated code within the common [file]\Application\GeneratedCode[.] folder.
+The generated code of an Embedded Wizard example is imported automatically to the IAR Embedded Workbench project using the Project Connection mechanism.
+To establish this automatic project import a post process has to be added to the Profile settings within Embedded Wizard Studio:
+{step}Open the desired Embedded Wizard example project.{.}
+{step}Select the [>>:profile-member]Profile[.] and set the attribute [>>:postprocess-attr]PostProcess[.] to the file [file]..\..\..\Application\Project\EWARM\EWARM_ew_post_process.cmd[.].{.}
+After the Embedded Wizard code generation the installed post process will generate a [file]ewfiles.ipcf[.] file, that controls the import to the IAR Embedded Workbench project.
+After returning to IAR Embedded Workbench, the latest generated code and the suitable Embedded Wizard Platform Package will be imported to the IAR Embedded Workbench project (depending on the color format and the screen orientation selected in the Embedded Wizard Profile).
+If the color format or the screen orientation was changed, please do a complete rebuild of the IAR Embedded Workbench project.
+
+#9 Using Keil MDK-ARM
+
+If you want to use the Keil MDK-ARM toolchain instead of the GCC ARM embedded toolchain, please follow these instructions:
+The subdirectory [file]\Application\Project\MDK-ARM[.] contains a template project that is commonly used for all provided Embedded Wizard examples. All Embedded Wizard examples will store the generated code within the common [file]\Application\GeneratedCode[.] folder.
+The generated code of an Embedded Wizard example is imported automatically to the Keil MDK-ARM project using the CMSIS PACK mechanism.
+The following steps are needed to establish this automatic project import:
+{step}Install [file]Tara.Embedded_Wizard_Launcher.x.x.x.pack[.] by double clicking. You will find the file within the subdirectory [file]\Application\Project\MDK-ARM[.].{.}
+{step}Open the desired Embedded Wizard example project.{.}
+{step}Select the [>>:profile-member]Profile[.] and set the attribute [>>:postprocess-attr]PostProcess[.] to the file [file]..\..\..\Application\Project\MDK-ARM\MDK-ARM_ew_post_process.cmd[.].{.}
+After the Embedded Wizard code generation the installed post process will generate a [file]ewfiles.gpdsc[.] file, that controls the Keil MDK-ARM project import.
+In Keil MDK-ARM a dialog appears: "For the current project new generated code is available for import". After confirmation, the latest generated code and the suitable Embedded Wizard Platform Package will be imported to the Keil MDK-ARM project (depending on the color format and the screen orientation selected in the Embedded Wizard Profile).
+If the color format or the screen orientation was changed, please do a complete rebuild of the Keil MDK-ARM project.
+
+#10 Using STM32CubeIDE
+
+If you want to use the STM32CubeIDE toolchain instead of the GCC ARM embedded toolchain, please follow these instructions:
+The subdirectory [file]\Application\Project\STM32CubeIDE[.] contains a template project that is commonly used for all provided Embedded Wizard examples. All Embedded Wizard examples will store the generated code within the common [file]\Application\GeneratedCode[.] folder.
+The following steps are needed to establish this automatic project import:
+{step}Open the desired Embedded Wizard example project.{.}
+{step}Select the [>>:profile-member]Profile[.] and set the attribute [>>:postprocess-attr]PostProcess[.] to the file [file]..\..\..\Application\Project\STM32CubeIDE\STM32H750-Discovery\STM32CubeIDE_ew_post_process.cmd[.].{.}
+After the Embedded Wizard code generation the installed post process will adapt the [file].cproject[.] XML file. All necessary libraries and include paths (depending on the color format and screen rotation) will be set automatically.
+The given STM32CubeIDE example under [file]\Application\STM32CubeIDE[.] contains a workspace which has all adaptions for an Embedded Wizard project. For using this within STM32CubeIDE do following steps:
+{step}Open STM32CubeIDE and select the directory [file]\Application\Project\STM32CubeIDE[.] as workspace directory.{.}
+{step}To import the C project, select the menu item [menu]File/Import[.] and choose [identifier]General[.] - [identifier]Existing Projects into Workspace[.] and press [hotkey]Next[.].{.}
+{step}Choose [identifier]Select root directory[.] - [identifier]Browse[.] and select the directory [file]\Application\Project\STM32CubeIDE\STM32H750-Discovery[.].{.}
+{step}Press [hotkey]Finish[.].{.}
+{step}To compile the project press the [identifier]Build[.] button (hammer symbol) within the toolbar.{.}
+{step}Press the [identifier]Run[.] button within the toolbar to start the application on the target.{.}
+If the color format or the screen orientation was changed, please do a clean in STM32CubeIDE.
+
+#15 Custom specific hardware
+
+In order to bring-up an Embedded Wizard generated UI application on your STM32 custom hardware, you can use the provided Embedded Wizard Build Environment for STM32H750 Discovery as a template. The file [file]ewconfig.h[.] contains [>>:target-configuration]target specific settings[.] that have to be adjusted to your particular hardware. Furthermore, the subdirectory [file]\TargetSpecific[.] contains all the platform specific source codes. Assuming that your custom hardware is similar to the STM32H750 Discovery board, the following adaptations or configurations are typically necessary:
+{step}System clock ([file]ew_bsp_system.c[.]) - The first and the important step is to configure the system and peripheral clock. Depending on your hardware you can use the internal or external clock as source. Please take care that your LTDC and USART are connected to the selected clock source and configured correctly. The Embedded Wizard UI application runs independent from the chosen system frequency, however, with a slow system clock, all components need more time for their tasks (e.g. display refresh).{.}
+{step}SDRAM ([file]ew_bsp_system.c[.]) - The SDRAM configuration has to be adapted to your particular SDRAM. Please use a memory test to ensure that writing and reading works properly. If the start address and/or the size of the SDRAM has changed, please adapt the settings for the framebuffer and the memory pool within the file [file]ewconfig.h[.].{.}
+{step}MPU ([file]ew_bsp_system.c[.]) - Please take care to configure the MPU properly in order to avoid unexpected speculative read accesses outside of valid memory regions. For more details see [>>:https://www.st.com/resource/en/application_note/dm00272912.pdf]AN4838[.] and [>>:https://www.st.com/resource/en/application_note/dm00287603.pdf]AN4861 chapter 4.6.2[.].{.}
+{step}USART ([file]ew_bsp_console.c[.]) - Typically, the USART configuration just requires a new pinout according your hardware layout. The usage of the serial connection is highly recommended in order to get status and debug messages during runtime.{.}
+{step}LTDC ([file]ew_bsp_display.c[.]) - The LTDC is an integrate display controller which allows you to connect many different display types to a STM32 device. Here you have to adjust the interface to your display. It is important to adjust your pinout, polarity, timings, color format and layer settings according your dedicated display. For more details concerning LTDC settings please have a look to [>>:https://www.st.com/resource/en/application_note/dm00287603.pdf]AN4861[.]. In case you are using a MIPI-DSI display, please use the [>>:getting-started-stm32h747-discovery]Build Environment for STM32H747-Discovery[.] as template.{.}
+{step}Touch ([file]ew_bsp_touch.c[.]) - If your application requires touch support, you can integrate a given touch driver provided by the touch controller manufacturer or write your own. As a result the current touch position should be returned.{.}
+As soon as these steps are done, you can create your own GUI application or use one of the provided examples. If the size of your display is different compared to the display of the STM32H750 Discovery board (480x272 pixel), please adapt the attribute [>>:screensize-attr]ScreenSize[.] of the UI project and the size of the framebuffer within the file [file]ewconfig.h[.] accordingly.
+In case you want to change the operating system, please adapt the all functions within the file [file]ew_bsp_os.c[.] to your particular operating system. Furthermore, adapt the makefile/projectfile accordingly.
+
+#100 Release notes
+
+The following section contains the version history of the Build Environment (including Graphics Engine and Runtime Environment) for STM32H750 Discovery. These release notes describe only the platform specific aspects - for all general improvements and enhancements please see the Embedded Wizard [>>:embedded-wizard-v14]release notes[.].
+
+##14000000 Version 14.00.00.00
+
+{feature}Using Graphics Engine (GFX) and Runtime Environment (RTE) V14.00.{.}
+{feature}Using STM32CubeProgrammer V2.17.0.{.}
+{feature}Using STM32CubeH7 Firmware Package V1.11.0.{.}
+{feature}Using Arm GNU Toolchain V11.2-2022.02.{.}
+{feature}Using IAR Embedded Workbench 9.60.2, IAR C/C++ Compiler V9.60.2.399/W64 for ARM.{.}
+{feature}Using Keil MDK-ARM Professional Version 5.41.0.0, ARM Compiler 6.22 (armclang).{.}
+{feature}Using STM32CubeIDE V1.16.1.{.}
+{feature}Known Issue: Using STM32CubeIDE V1.16.1 will generate a couple of linker warnings and errors (e.g. "_close is not implemented and will always fail") - which can be ignored.{.}
+
